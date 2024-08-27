@@ -42,7 +42,7 @@ exports.updateAdmin = async (req, res) => {
 // Get All Users (Admin)
 exports.getAllUsers = async (req, res) => {
     try {
-        const users = await User.find({ role: 'customer' });
+        const users = await User.find({ role: 'user' });
         res.json(users);
     } catch (error) {
         res.status(500).json({ error: error.message });

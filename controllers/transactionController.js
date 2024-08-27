@@ -262,3 +262,62 @@ exports.repayLoan = async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 };
+// Get all loans for the logged-in user
+exports.getUserLoans = async (req, res) => {
+    try {
+        const loans = await Loan.find({ user: req.user._id });
+        res.status(200).json(loans);
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching loans' });
+    }
+};
+
+// Get all recurring deposits for the logged-in user
+exports.getUserRecurringDeposits = async (req, res) => {
+    try {
+        const recurringDeposits = await RecurringDeposit.find({ user: req.user._id });
+        res.status(200).json(recurringDeposits);
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching recurring deposits' });
+    }
+};
+
+// Get all fixed deposits for the logged-in user
+exports.getUserFixedDeposits = async (req, res) => {
+    try {
+        const fixedDeposits = await FixedDeposit.find({ user: req.user._id });
+        res.status(200).json(fixedDeposits);
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching fixed deposits' });
+    }
+};
+
+// Get all loans for all users (admin only)
+exports.getAllLoans = async (req, res) => {
+    try {
+        const loans = await Loan.find().populate('user', 'name email');
+        res.status(200).json(loans);
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching loans' });
+    }
+};
+
+// Get all recurring deposits for all users (admin only)
+exports.getAllRecurringDeposits = async (req, res) => {
+    try {
+        const recurringDeposits = await RecurringDeposit.find().populate('user', 'name email');
+        res.status(200).json(recurringDeposits);
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching recurring deposits' });
+    }
+};
+
+// Get all fixed deposits for all users (admin only)
+exports.getAllFixedDeposits = async (req, res) => {
+    try {
+        const fixedDeposits = await FixedDeposit.find().populate('user', 'name email');
+        res.status(200).json(fixedDeposits);
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching fixed deposits' });
+    }
+};
