@@ -34,7 +34,7 @@ exports.withdraw = async (req, res) => {
     try {
         const user = await User.findById(req.user._id);
         if (user.balance < amount) {
-            return res.status(400).json({ message: 'Insufficient balance' });
+            return res.status(400).json({ error: 'Insufficient balance' });
         }
 
         const transaction = new Transaction({
@@ -66,7 +66,7 @@ exports.transfer = async (req, res) => {
         }
 
         if (sender.balance < amount) {
-            return res.status(400).json({ message: 'Insufficient balance' });
+            return res.status(400).json({ error: 'Insufficient balance' });
         }
 
         const transaction = new Transaction({
@@ -199,7 +199,7 @@ exports.createFixedDeposit = async (req, res) => {
         await fixedDeposit.save();
         await user.save();
 
-        res.status(201).json(fixedDeposit);
+        res.status(201).json({message:"Fixed Deposit is started"});
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
@@ -226,7 +226,7 @@ exports.withdrawFixedDeposit = async (req, res) => {
 
         res.status(200).json({ message: 'Fixed Deposit withdrawn successfully' });
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(400).json({ message: 'Cannot withdraw before maturity date' });
     }
 };
 // Loan Repayment

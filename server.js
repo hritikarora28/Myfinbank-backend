@@ -5,6 +5,9 @@ const adminRoutes = require('./routes/adminRoutes');
 const userRoutes = require('./routes/userRoutes');
 const loanRoutes = require('./routes/loanRoutes');
 const transactionRoutes = require('./routes/transactionRoutes');
+const emailRoutes = require('./routes/emailRoutes');
+const chatRoutes = require('./routes/chatRoutes');
+
 require('dotenv').config();
 const corsOptions = {
     origin: 'http://localhost:3000', // Corrected the origin URL
@@ -27,6 +30,8 @@ app.use('/api/admins', adminRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/loans', loanRoutes);
 app.use('/api/transactions', transactionRoutes);
+app.use('/api/emails', emailRoutes);
+app.use('/api/chats', chatRoutes);
 
 // Start Server
 const PORT = process.env.PORT || 5000;
