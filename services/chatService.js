@@ -1,16 +1,15 @@
-// services/chatService.js
 const Chat = require('../models/Chat');
 
-const sendMessage = async (senderId, receiverId, message) => {
-  const chat = new Chat({ senderId, receiverId, message });
+const sendMessage = async (senderEmail, receiverEmail, message) => {
+  const chat = new Chat({ senderEmail, receiverEmail, message });
   await chat.save();
   return chat;
 };
 
-const getMessages = async (userId) => {
+const getMessages = async (userEmail) => {
   return Chat.find({
-    $or: [{ senderId: userId }, { receiverId: userId }],
-  }).populate('senderId receiverId', 'name email').sort({ timestamp: -1 });
+    $or: [{ senderEmail: userEmail }, { receiverEmail: userEmail }],
+  }).sort({ timestamp: -1 });
 };
 
 module.exports = { sendMessage, getMessages };
