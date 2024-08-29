@@ -15,18 +15,20 @@ exports.registerUser = async (req, res) => {
 
 // User Login
 exports.loginUser = async (req, res) => {
-    const { email, password } = req.body;
-    try {
-        const user = await User.findOne({ email });
-        if (!user || user.password !== password) {
-            return res.status(400).json({ message: 'Invalid credentials' });
-        }
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.json({ token });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+  const { email, password } = req.body;
+  try {
+      const user = await User.findOne({ email });
+      if (!user || user.password !== password) {
+          return res.status(400).json({ message: 'Invalid credentials' });
+      }
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+      res.json({ token });
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
 };
+
+
 exports.getUserDetails = async (req, res) => {
     try {
       // Assuming req.user contains user information from auth middleware

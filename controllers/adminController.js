@@ -95,3 +95,39 @@ exports.toggleUserActiveStatus = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+// Update User Details by Admin
+exports.updateUserDetails = async (req, res) => {
+    const { userId } = req.params; // Assuming the user ID is passed as a route parameter
+    const { name, email, age } = req.body; // The fields that can be updated
+
+    try {
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Update the user fields
+        user.name = name || user.name;
+        user.email = email || user.email;
+        user.age = age || user.age;
+
+        await user.save();
+
+        res.status(200).json({ message: 'User details updated successfully', user });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// Fetch users with zero balance
+exports.getUsersWithZeroBalance = async (req, res) => {
+    try {
+        // Query for users with zero balance and role 'user', selecting only specific fields
+        const usersWithZeroBalance = await User.find({ balance: 0, role: 'user' }).select('name email _id');
+        res.status(200).json(usersWithZeroBalance);
+    } catch (error) {
+        console.error('Error fetching users with zero balance:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};

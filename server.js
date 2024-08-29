@@ -7,6 +7,9 @@ const loanRoutes = require('./routes/loanRoutes');
 const transactionRoutes = require('./routes/transactionRoutes');
 const emailRoutes = require('./routes/emailRoutes');
 const chatRoutes = require('./routes/chatRoutes');
+const cron = require('node-cron');
+const { checkAndNotifyAdmins } = require('./services/emailService');
+
 
 require('dotenv').config();
 const corsOptions = {
@@ -32,6 +35,10 @@ app.use('/api/loans', loanRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/emails', emailRoutes);
 app.use('/api/chats', chatRoutes);
+cron.schedule('0 * * * *', () => {
+  checkAndNotifyAdmins();
+});
+
 
 // Start Server
 const PORT = process.env.PORT || 5000;
